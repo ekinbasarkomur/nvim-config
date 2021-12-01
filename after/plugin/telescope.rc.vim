@@ -17,6 +17,11 @@ local telescope = require('telescope')
 local actions = require('telescope.actions')
 
 telescope.setup{
+  pickers = {
+    find_files = {
+      hidden = false
+    }
+  },
   defaults = {
     mappings = {
       n = {

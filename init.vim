@@ -97,7 +97,18 @@ runtime ./plug.vim
 " Syntax theme "{{{
 " ---------------------------------------------------------------------
 
-" colorscheme PaperColor
+if exists("&termguicolors") && exists("&winblend")
+  syntax enable
+  set termguicolors
+  set winblend=0
+  set wildoptions=pum
+  set pumblend=5
+  set background=dark
+  " " Use Horizon
+  let g:horizon_termtans=1
+  runtime ./colors/Horizon.vim
+  colorscheme Horizon
+endif
 
 "}}}
 
