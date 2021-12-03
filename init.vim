@@ -24,6 +24,7 @@ set cmdheight=1
 set laststatus=2
 set scrolloff=10
 set expandtab
+set termguicolors
 
 set shell=bash
 if has ('nvim')
