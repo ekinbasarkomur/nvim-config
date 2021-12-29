@@ -25,7 +25,7 @@ if has("nvim")
   Plug 'ryanoasis/vim-devicons'
   Plug 'preservim/tagbar'
   Plug 'NLKNguyen/papercolor-theme'
-
+  Plug 'thibthib18/ros-nvim'
 endif
 
 call plug#end()
