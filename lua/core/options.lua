@@ -20,7 +20,10 @@ opt.cursorline = true
 opt.signcolumn = "yes"
 opt.scrolloff = 8
 opt.sidescrolloff = 8
-opt.wrap = false
+opt.wrap = true           -- wrap long lines
+opt.linebreak = true      -- break at word boundary, not mid-word
+opt.breakindent = true    -- wrapped lines keep the same indent level
+opt.showbreak = "↪ "     -- prefix to show on wrapped continuation lines
 opt.colorcolumn = "120"
 
 -- Search
@@ -45,3 +48,6 @@ opt.clipboard = "unnamedplus"
 
 -- Mouse
 opt.mouse = "a"
+
+-- Session / window persistence
+opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"

@@ -40,25 +40,9 @@ return {
   {
     "m4xshen/hardtime.nvim",
     dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
-    opts = {
-      enabled       = true,
-      disable_mouse = false,
-      hint          = true,
-      notification  = true,
-      max_time      = 1000,
-      max_count     = 2,
-      -- Allow arrow keys — remove when comfortable with hjkl
-      restricted_keys = {
-        ["h"] = { "n", "x" },
-        ["j"] = { "n", "x" },
-        ["k"] = { "n", "x" },
-        ["l"] = { "n", "x" },
-      },
-      disabledfiletypes = {
-        "qf", "netrw", "NvimTree", "lazy", "mason", "help",
-        "toggleterm", "Trouble",
-      },
-    },
+    -- Arrow keys can't be re-enabled via config (hardtime always merges its defaults).
+    -- Disabled for now — re-enable when you want to go full vim-motions.
+    enabled = false,
   },
 
   -- Vim-be-good: interactive motion training game
