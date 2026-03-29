@@ -43,8 +43,22 @@ opt.backup = false
 opt.updatetime = 250
 opt.timeoutlen = 300
 
--- Clipboard
+-- Clipboard — OSC52 lets yank work over SSH into local clipboard
 opt.clipboard = "unnamedplus"
+if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
+  -- Over SSH: use OSC52 to push to local clipboard
+  vim.g.clipboard = {
+    name = "OSC52",
+    copy = {
+      ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+      ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+    },
+    paste = {
+      ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+      ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+    },
+  }
+end
 
 -- Mouse
 opt.mouse = "a"
