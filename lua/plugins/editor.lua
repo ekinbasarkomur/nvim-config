@@ -59,7 +59,6 @@ return {
             },
             horizontal = {
               preview_width  = 0.55,
-              results_width  = 0.45,
               preview_cutoff = 80,
             },
             vertical = {

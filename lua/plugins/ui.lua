@@ -113,4 +113,13 @@ return {
 
   -- Icons
   { "nvim-tree/nvim-web-devicons", lazy = true },
+
+  -- Rainbow brackets: colors nested delimiters by nesting depth (treesitter)
+  {
+    "HiPhish/rainbow-delimiters.nvim",
+    event = "BufReadPost",
+    config = function()
+      require("rainbow-delimiters.setup").setup({})
+    end,
+  },
 }
