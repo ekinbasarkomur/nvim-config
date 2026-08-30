@@ -17,6 +17,10 @@ require("lazy").setup({
   { import = "plugins.git" },
   { import = "plugins.ai" },
   { import = "plugins.learning" },
+  { import = "plugins.data-explorer" },
+  { import = "plugins.format" },
+  { import = "plugins.rust" },
+  { import = "plugins.dap" },
 }, {
   defaults = { lazy = false },
   install = { colorscheme = { "catppuccin" } },

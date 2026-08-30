@@ -14,13 +14,31 @@ return {
     },
   },
 
-  -- Mason-lspconfig bridge
+  -- Mason-lspconfig bridge (LSP servers only)
   {
     "williamboman/mason-lspconfig.nvim",
     dependencies = { "williamboman/mason.nvim" },
     opts = {
-      ensure_installed     = { "lua_ls", "pyright", "ts_ls" },
+      -- rust-analyzer  → rustup component (rustaceanvim manages it)
+      -- clangd         → system (Xcode CLT / Apple clangd 21)
+      -- ruff           → pip (~/.local/bin)
+      -- clang-format   → system
+      ensure_installed = { "lua_ls", "pyright", "ts_ls" },
       automatic_installation = true,
+    },
+  },
+
+  -- Mason non-LSP tools (formatters, DAP adapters)
+  {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    dependencies = { "williamboman/mason.nvim" },
+    opts = {
+      ensure_installed = {
+        "stylua",    -- Lua formatter
+        "codelldb",  -- DAP adapter for Rust + C++
+      },
+      auto_update    = false,
+      run_on_start   = true,
     },
   },
 
@@ -54,17 +72,25 @@ return {
             })
           end
 
-          map("gd", vim.lsp.buf.definition, "Go to definition")
-          map("gD", vim.lsp.buf.declaration, "Go to declaration")
-          map("gr", vim.lsp.buf.references, "References")
-          map("gi", vim.lsp.buf.implementation, "Implementation")
-          map("K", vim.lsp.buf.hover, "Hover docs")
-          map("<leader>rn", vim.lsp.buf.rename, "Rename")
-          map("<leader>ca", vim.lsp.buf.code_action, "Code action")
-          map("<leader>D", vim.lsp.buf.type_definition, "Type definition")
-          map("[d", vim.diagnostic.goto_prev, "Prev diagnostic")
-          map("]d", vim.diagnostic.goto_next, "Next diagnostic")
+          map("gd", vim.lsp.buf.definition,      "Go to definition")
+          map("gD", vim.lsp.buf.declaration,     "Go to declaration")
+          map("gr", vim.lsp.buf.references,      "References")
+          map("gi", vim.lsp.buf.implementation,  "Implementation")
+          map("K",  vim.lsp.buf.hover,           "Hover docs")
+          map("<leader>rn", vim.lsp.buf.rename,       "Rename")
+          map("<leader>ca", vim.lsp.buf.code_action,  "Code action")
+          map("<leader>D",  vim.lsp.buf.type_definition, "Type definition")
+          map("[d", vim.diagnostic.goto_prev,    "Prev diagnostic")
+          map("]d", vim.diagnostic.goto_next,    "Next diagnostic")
           map("<leader>dl", vim.diagnostic.open_float, "Diagnostic float")
+
+          -- Signature help in insert mode
+          vim.keymap.set("i", "<C-s>", vim.lsp.buf.signature_help, {
+            buffer = bufnr,
+            desc = "LSP: Signature help",
+            noremap = true,
+            silent = true,
+          })
         end,
       })
 
@@ -88,12 +114,39 @@ return {
         ts_ls = {
           capabilities = capabilities,
         },
+        -- C++ — system clangd (Apple clangd 21, installed via Xcode CLT)
+        -- Reads compile_commands.json from build/ automatically
+        clangd = {
+          capabilities = capabilities,
+          cmd = { "clangd", "--background-index", "--clang-tidy" },
+        },
+        -- Rust — rust-analyzer via rustup component
+        -- rustaceanvim manages its own server start; skip here if rustaceanvim is active
+        rust_analyzer = {
+          capabilities = capabilities,
+          settings = {
+            ["rust-analyzer"] = {
+              checkOnSave = {
+                command = "clippy",
+              },
+              cargo = {
+                allFeatures = true,
+              },
+            },
+          },
+        },
       }
 
       for server_name, config in pairs(servers) do
-        vim.lsp.config(server_name, config)
-        vim.lsp.enable(server_name)
+        -- rustaceanvim handles rust_analyzer itself; don't double-start it
+        if server_name ~= "rust_analyzer" then
+          vim.lsp.config(server_name, config)
+          vim.lsp.enable(server_name)
+        end
       end
+
+      -- Store rust_analyzer config for rustaceanvim to pick up
+      vim.g.rust_analyzer_config = servers.rust_analyzer.settings
 
       vim.diagnostic.config({
         virtual_text = { prefix = "●" },

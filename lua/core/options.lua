@@ -65,3 +65,6 @@ opt.mouse = "a"
 
 -- Session / window persistence
 opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
+-- K tuşu man sayfasına gitmesin; LSP hover kullan
+vim.o.keywordprg = ":help"

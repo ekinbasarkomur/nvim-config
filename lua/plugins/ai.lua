@@ -1,22 +1,4 @@
 return {
-  -- Claude Code integration (right pane, <leader>cc)
-  -- Using the official claude-code.nvim plugin
-  {
-    "coder/claudecode.nvim",
-    -- fallback: if this repo doesn't exist, try "greggroth/claude-code.nvim"
-    opts = {
-      terminal_cmd = "claude",
-      side_by_side = true,
-      split_side = "right",
-      split_width_percentage = 0.4,
-    },
-    keys = {
-      { "<leader>cc", "<cmd>ClaudeCode<cr>",       desc = "Toggle Claude Code" },
-      { "<leader>cs", "<cmd>ClaudeCodeSend<cr>",   desc = "Send to Claude",    mode = "v" },
-      { "<leader>cf", "<cmd>ClaudeCodeFocus<cr>",  desc = "Focus Claude pane" },
-    },
-  },
-
   -- Avante.nvim — inline Cursor-style AI assistant
   {
     "yetone/avante.nvim",

@@ -119,16 +119,21 @@ return {
     end,
   },
 
-  -- Treesitter
+  -- Treesitter (v2 API: opts table, no require("nvim-treesitter.configs"))
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
-    lazy = false,
-    config = function()
-      require("nvim-treesitter").setup({})
-      local ts_install = require("nvim-treesitter.install")
-      ts_install.prefer_git = false
-    end,
+    lazy  = false,
+    opts  = {
+      ensure_installed = {
+        "lua", "python", "rust", "cpp", "c",
+        "javascript", "typescript", "toml", "json",
+        "bash", "markdown", "markdown_inline",
+      },
+      highlight = { enable = true },
+      indent    = { enable = true },
+      prefer_git = false,
+    },
   },
 
   -- Terminal
