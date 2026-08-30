@@ -1,17 +1,4 @@
 return {
-  -- Mason-DAP bridge: otomatik codelldb kurulumu
-  {
-    "jay-babu/mason-nvim-dap.nvim",
-    dependencies = {
-      "williamboman/mason.nvim",
-      "mfussenegger/nvim-dap",
-    },
-    opts = {
-      ensure_installed = { "codelldb" },
-      automatic_installation = true,
-    },
-  },
-
   -- Core DAP
   {
     "mfussenegger/nvim-dap",
@@ -19,13 +6,13 @@ return {
       "rcarriga/nvim-dap-ui",
       "nvim-neotest/nvim-nio",
       "theHamsta/nvim-dap-virtual-text",
-      "jay-babu/mason-nvim-dap.nvim",
     },
     config = function()
       local dap   = require("dap")
       local dapui = require("dapui")
 
-      -- ── CodeLLDB adapter (Rust + C++) ──────────────────────────────
+      -- ── CodeLLDB adapter (Rust + C++) ────────────────────────────────────
+      -- Installed via mason-tool-installer (ensure_installed in lsp.lua)
       local codelldb_path = vim.fn.stdpath("data") .. "/mason/bin/codelldb"
 
       dap.adapters.codelldb = {
@@ -37,7 +24,7 @@ return {
         },
       }
 
-      -- ── Rust ───────────────────────────────────────────────────────
+      -- ── Rust ──────────────────────────────────────────────────────────────
       dap.configurations.rust = {
         {
           name    = "Launch binary",
@@ -52,7 +39,7 @@ return {
         },
       }
 
-      -- ── C++ ────────────────────────────────────────────────────────
+      -- ── C++ ───────────────────────────────────────────────────────────────
       dap.configurations.cpp = {
         {
           name    = "Launch binary",
@@ -69,7 +56,7 @@ return {
 
       dap.configurations.c = dap.configurations.cpp
 
-      -- ── UI ─────────────────────────────────────────────────────────
+      -- ── UI ────────────────────────────────────────────────────────────────
       dapui.setup({
         layouts = {
           {
@@ -94,29 +81,29 @@ return {
       })
 
       -- UI otomatik aç/kapat
-      dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
-      dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
-      dap.listeners.before.event_exited["dapui_config"]     = function() dapui.close() end
+      dap.listeners.after.event_initialized["dapui_config"]  = function() dapui.open() end
+      dap.listeners.before.event_terminated["dapui_config"]  = function() dapui.close() end
+      dap.listeners.before.event_exited["dapui_config"]      = function() dapui.close() end
 
-      -- ── Virtual text ───────────────────────────────────────────────
+      -- ── Virtual text ──────────────────────────────────────────────────────
       require("nvim-dap-virtual-text").setup()
 
-      -- ── Keymaps ────────────────────────────────────────────────────
+      -- ── Keymaps ───────────────────────────────────────────────────────────
       local map = function(keys, func, desc)
         vim.keymap.set("n", keys, func, { silent = true, desc = "DAP: " .. desc })
       end
 
-      map("<F5>",        dap.continue,         "Continue / Start")
-      map("<F10>",       dap.step_over,         "Step over")
-      map("<F11>",       dap.step_into,         "Step into")
-      map("<F12>",       dap.step_out,          "Step out")
-      map("<leader>db",  dap.toggle_breakpoint, "Toggle breakpoint")
-      map("<leader>dB",  function()
+      map("<F5>",       dap.continue,          "Continue / Start")
+      map("<F10>",      dap.step_over,          "Step over")
+      map("<F11>",      dap.step_into,          "Step into")
+      map("<F12>",      dap.step_out,           "Step out")
+      map("<leader>db", dap.toggle_breakpoint,  "Toggle breakpoint")
+      map("<leader>dB", function()
         dap.set_breakpoint(vim.fn.input("Condition: "))
       end, "Conditional breakpoint")
-      map("<leader>dr",  dap.repl.open,         "Open REPL")
-      map("<leader>du",  dapui.toggle,          "Toggle UI")
-      map("<leader>dx",  dap.terminate,         "Terminate")
+      map("<leader>dr", dap.repl.open,          "Open REPL")
+      map("<leader>du", dapui.toggle,           "Toggle UI")
+      map("<leader>dx", dap.terminate,          "Terminate")
     end,
   },
 }
