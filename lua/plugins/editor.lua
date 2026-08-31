@@ -170,4 +170,25 @@ return {
     event = "VeryLazy",
     opts = {},
   },
+
+  -- AI inline completion (ghost text, independent of cmp)
+  {
+    "supermaven-inc/supermaven-nvim",
+    event = "InsertEnter",
+    opts = {
+      keymaps = {
+        accept_suggestion = "<C-l>",   -- <Tab> is owned by cmp/luasnip
+        clear_suggestion  = "<C-]>",
+        accept_word       = "<C-j>",   -- accept one word at a time
+      },
+      ignore_filetypes = { "TelescopePrompt", "NvimTree" },
+      color = {
+        suggestion_color = "#6c7086",  -- muted ghost text
+        cterm = 244,
+      },
+      log_level = "off",
+      disable_inline_completion = false,
+      disable_keymaps = false,
+    },
+  },
 }
