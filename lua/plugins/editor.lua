@@ -156,12 +156,6 @@ return {
     opts = { check_ts = false },
   },
 
-  -- Comments
-  {
-    "numToStr/Comment.nvim",
-    lazy = false,
-    opts = {},
-  },
 
   -- Surround
   {
