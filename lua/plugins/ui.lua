@@ -49,26 +49,6 @@ return {
   },
 
   -- Buffer tabs
-  {
-    "akinsho/bufferline.nvim",
-    version = "*",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    opts = {
-      options = {
-        mode = "buffers",
-        diagnostics = "nvim_lsp",
-        always_show_bufferline = false,
-        offsets = {
-          {
-            filetype = "NvimTree",
-            text = "File Explorer",
-            text_align = "center",
-            separator = true,
-          },
-        },
-      },
-    },
-  },
 
   -- Notifications
   {
@@ -104,12 +84,6 @@ return {
   },
 
   -- Color highlighter
-  {
-    "norcalli/nvim-colorizer.lua",
-    config = function()
-      require("colorizer").setup()
-    end,
-  },
 
   -- Icons
   { "nvim-tree/nvim-web-devicons", lazy = true },
@@ -121,5 +95,22 @@ return {
     config = function()
       require("rainbow-delimiters.setup").setup({})
     end,
+  },
+
+  -- Markdown rendered in place: headings, tables, code blocks, checkboxes.
+  -- Only while the cursor is elsewhere; the line under the cursor shows raw
+  -- text so it stays editable.
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    ft = { "markdown" },
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
+    opts = {
+      heading = { icons = { "# ", "## ", "### ", "#### ", "##### ", "###### " } },
+      code = { width = "block", left_pad = 1, right_pad = 1 },
+      checkbox = { enabled = true },
+    },
+    keys = {
+      { "<leader>tm", "<cmd>RenderMarkdown toggle<cr>", desc = "Toggle markdown rendering" },
+    },
   },
 }

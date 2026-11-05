@@ -3,6 +3,14 @@ return {
     "stevearc/conform.nvim",
     event = { "BufWritePre" },
     cmd   = { "ConformInfo" },
+    keys = {
+      {
+        "<leader>cf",
+        function() require("conform").format({ lsp_fallback = true }) end,
+        mode = { "n", "v" },
+        desc = "Format file or selection",
+      },
+    },
     opts = {
       formatters_by_ft = {
         python     = { "ruff_format", "ruff_organize_imports" },

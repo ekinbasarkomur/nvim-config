@@ -65,3 +65,16 @@ autocmd("FileType", {
     vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = ev.buf, silent = true })
   end,
 })
+
+-- Mute doc-comment highlight (/// in Rust, /** */ etc.)
+-- Catppuccin Mocha pink is too loud; calm slate-blue instead.
+autocmd("ColorScheme", {
+  group = augroup("DocCommentColor", { clear = true }),
+  pattern = "*",
+  callback = function()
+    vim.api.nvim_set_hl(0, "@comment.documentation", { fg = "#7aa2d4", italic = true })
+    vim.api.nvim_set_hl(0, "SpecialComment",         { fg = "#7aa2d4", italic = true })
+  end,
+})
+vim.api.nvim_set_hl(0, "@comment.documentation", { fg = "#7aa2d4", italic = true })
+vim.api.nvim_set_hl(0, "SpecialComment",         { fg = "#7aa2d4", italic = true })

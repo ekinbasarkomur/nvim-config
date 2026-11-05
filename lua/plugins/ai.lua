@@ -1,73 +1,25 @@
 return {
-  -- Avante.nvim — inline Cursor-style AI assistant
+  -- Claude Code inside the editor. Unlike a chat plugin with its own API key,
+  -- this speaks the same WebSocket protocol as the VS Code extension, so it
+  -- drives the Claude Code CLI you already pay for. Selections go out as
+  -- context; what Claude proposes comes back as a diff you accept or reject.
   {
-    "yetone/avante.nvim",
-    event   = "VeryLazy",
-    version = false,
-    build   = "make",
-    dependencies = {
-      "stevearc/dressing.nvim",
-      "nvim-lua/plenary.nvim",
-      "MunifTanjim/nui.nvim",
-      "nvim-tree/nvim-web-devicons",
-      {
-        "HakonHarnes/img-clip.nvim",
-        event = "VeryLazy",
-        opts = {
-          default = {
-            embed_image_as_base64 = false,
-            prompt_for_file_name  = false,
-            drag_and_drop         = { insert_mode = true },
-            use_absolute_path     = true,
-          },
-        },
-      },
-      {
-        "MeanderingProgrammer/render-markdown.nvim",
-        opts = { file_types = { "markdown", "Avante" } },
-        ft   = { "markdown", "Avante" },
-      },
-    },
+    "coder/claudecode.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
     opts = {
-      provider               = "claude",
-      auto_suggestions_provider = "claude",
-      -- avante v2 API: provider config goes under providers table
-      providers = {
-        claude = {
-          endpoint = "https://api.anthropic.com",
-          model    = "claude-sonnet-4-5",
-          extra_request_body = {
-            temperature = 0,
-            max_tokens  = 4096,
-          },
-        },
-      },
-      behaviour = {
-        auto_suggestions                 = false,
-        auto_set_highlight_group         = true,
-        auto_set_keymaps                 = true,
-        auto_apply_diff_after_generation = false,
-        support_paste_from_clipboard     = false,
-      },
-      hints = { enabled = true },
-      windows = {
-        position = "right",
-        wrap     = true,
-        width    = 40,
-        sidebar_header = {
-          enabled = true,
-          align   = "center",
-          rounded = true,
-        },
-      },
-      highlights = {
-        diff = { current = "DiffText", incoming = "DiffAdd" },
-      },
-      diff = {
-        autojump          = true,
-        list_opener       = "copen",
-        override_timeoutlen = 500,
-      },
+      terminal = { split_side = "right", split_width_percentage = 0.35 },
+      diff_opts = { vertical_split = true },
+    },
+    keys = {
+      { "<leader>a",  nil,                              desc = "AI / Claude" },
+      { "<leader>aa", "<cmd>ClaudeCode<cr>",            desc = "Toggle Claude" },
+      { "<leader>af", "<cmd>ClaudeCodeFocus<cr>",       desc = "Focus Claude" },
+      { "<leader>ac", "<cmd>ClaudeCode --continue<cr>", desc = "Continue the last session" },
+      { "<leader>ar", "<cmd>ClaudeCode --resume<cr>",   desc = "Resume a session (pick one)" },
+      { "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>",       desc = "Send this buffer" },
+      { "<leader>as", "<cmd>ClaudeCodeSend<cr>",        desc = "Send selection", mode = "v" },
+      { "<leader>ay", "<cmd>ClaudeCodeDiffAccept<cr>",  desc = "Accept the diff" },
+      { "<leader>an", "<cmd>ClaudeCodeDiffDeny<cr>",    desc = "Reject the diff" },
     },
   },
 }

@@ -24,30 +24,21 @@ return {
         icons = { mappings = false },  -- disable mini.icons dependency
       })
       -- which-key v3 API: use add() with group instead of register()
+      -- One letter, one noun. Everything about that noun lives under it.
       wk.add({
-        { "<leader>f", group = "Find / Files" },
-        { "<leader>g", group = "Git" },
-        { "<leader>h", group = "Git Hunks" },
-        { "<leader>c", group = "Code / Claude" },
-        { "<leader>d", group = "Diagnostics" },
-        { "<leader>b", group = "Buffer" },
-        { "<leader>r", group = "Rename" },
+        { "<leader>a",  group = "AI / Claude" },
+        { "<leader>b",  group = "Buffer" },
+        { "<leader>c",  group = "Code: action, rename, format" },
+        { "<leader>d",  group = "Debug (DAP)" },
+        { "<leader>f",  group = "Find" },
+        { "<leader>g",  group = "Git" },
+        { "<leader>gh", group = "Hunk" },
+        { "<leader>s",  group = "Search / Replace" },
+        { "<leader>x",  group = "Diagnostics" },
+        { "<leader>y",  group = "Yank for the agent" },
       })
     end,
   },
 
-  -- Hardtime: breaks bad Vim habits, enforces motion practice
-  {
-    "m4xshen/hardtime.nvim",
-    dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
-    -- Arrow keys can't be re-enabled via config (hardtime always merges its defaults).
-    -- Disabled for now — re-enable when you want to go full vim-motions.
-    enabled = false,
-  },
 
-  -- Vim-be-good: interactive motion training game
-  {
-    "ThePrimeagen/vim-be-good",
-    cmd = "VimBeGood",
-  },
 }

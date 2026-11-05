@@ -72,17 +72,22 @@ return {
             })
           end
 
+          -- g = go somewhere
           map("gd", vim.lsp.buf.definition,      "Go to definition")
           map("gD", vim.lsp.buf.declaration,     "Go to declaration")
+          map("gy", vim.lsp.buf.type_definition, "Go to type definition")
           map("gr", vim.lsp.buf.references,      "References")
           map("gi", vim.lsp.buf.implementation,  "Implementation")
           map("K",  vim.lsp.buf.hover,           "Hover docs")
-          map("<leader>rn", vim.lsp.buf.rename,       "Rename")
+          -- <leader>c = change the code
           map("<leader>ca", vim.lsp.buf.code_action,  "Code action")
-          map("<leader>D",  vim.lsp.buf.type_definition, "Type definition")
+          map("<leader>cr", vim.lsp.buf.rename,       "Rename symbol")
+          -- <leader>x = diagnostics; ]d / [d walk them
           map("[d", vim.diagnostic.goto_prev,    "Prev diagnostic")
           map("]d", vim.diagnostic.goto_next,    "Next diagnostic")
-          map("<leader>dl", vim.diagnostic.open_float, "Diagnostic float")
+          map("<leader>xl", vim.diagnostic.open_float, "Diagnostic under cursor")
+          map("<leader>xx", "<cmd>Telescope diagnostics bufnr=0<cr>", "Diagnostics in this file")
+          map("<leader>xX", "<cmd>Telescope diagnostics<cr>", "Diagnostics in the project")
 
           -- Signature help in insert mode
           vim.keymap.set("i", "<C-s>", vim.lsp.buf.signature_help, {
@@ -166,27 +171,11 @@ return {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
-      "saadparwaiz1/cmp_luasnip",
-      {
-        "L3MON4D3/LuaSnip",
-        version = "v2.*",
-        build = "make install_jsregexp",
-        dependencies = { "rafamadriz/friendly-snippets" },
-        config = function()
-          require("luasnip.loaders.from_vscode").lazy_load()
-        end,
-      },
     },
     config = function()
-      local cmp     = require("cmp")
-      local luasnip = require("luasnip")
+      local cmp = require("cmp")
 
       cmp.setup({
-        snippet = {
-          expand = function(args)
-            luasnip.lsp_expand(args.body)
-          end,
-        },
         window = {
           completion    = cmp.config.window.bordered(),
           documentation = cmp.config.window.bordered(),
@@ -199,13 +188,10 @@ return {
           ["<C-Space>"] = cmp.mapping.complete(),
           ["<C-e>"]     = cmp.mapping.abort(),
           ["<CR>"]      = cmp.mapping.confirm({ select = false }),
+          -- Tab only walks the menu; with no snippets there is nothing to jump to.
           ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_next_item()
-            elseif luasnip.expandable() then
-              luasnip.expand()
-            elseif luasnip.expand_or_jumpable() then
-              luasnip.expand_or_jump()
             else
               fallback()
             end
@@ -213,8 +199,6 @@ return {
           ["<S-Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_prev_item()
-            elseif luasnip.jumpable(-1) then
-              luasnip.jump(-1)
             else
               fallback()
             end
@@ -222,7 +206,6 @@ return {
         }),
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
-          { name = "luasnip" },
           { name = "buffer" },
           { name = "path" },
         }),

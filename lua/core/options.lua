@@ -9,8 +9,8 @@ opt.number = true
 opt.relativenumber = true
 
 -- Indentation
-opt.tabstop = 2
-opt.shiftwidth = 2
+opt.tabstop = 4
+opt.shiftwidth = 4
 opt.expandtab = true
 opt.smartindent = true
 
@@ -29,7 +29,7 @@ opt.colorcolumn = "120"
 -- Search
 opt.ignorecase = true
 opt.smartcase = true
-opt.hlsearch = false
+opt.hlsearch = true       -- keep matches highlighted; <leader>/ clears them
 opt.incsearch = true
 
 -- Splits

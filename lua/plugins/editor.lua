@@ -30,13 +30,15 @@ return {
       })
       vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>",
         { desc = "Toggle file tree", silent = true })
+      vim.keymap.set("n", "<leader>E", ":NvimTreeFindFile<CR>",
+        { desc = "Reveal this file in the tree", silent = true })
     end,
   },
 
   -- Telescope fuzzy finder
   {
     "nvim-telescope/telescope.nvim",
-    tag = "0.1.8",
+    commit = "40aedd8a68c78a656a10a8d62d80c54af59420fb",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
@@ -157,6 +159,27 @@ return {
   },
 
 
+  -- Project-wide search and replace. The matches open in a normal buffer:
+  -- edit the replacement, see every hit with its context, then apply.
+  {
+    "MagicDuck/grug-far.nvim",
+    cmd = "GrugFar",
+    opts = { headerMaxWidth = 80 },
+    keys = {
+      {
+        "<leader>sp",
+        function() require("grug-far").open() end,
+        desc = "Search & replace in project",
+      },
+      {
+        "<leader>sp",
+        function() require("grug-far").with_visual_selection() end,
+        mode = "v",
+        desc = "Search & replace the selection in the project",
+      },
+    },
+  },
+
   -- Surround
   {
     "kylechui/nvim-surround",
@@ -171,9 +194,11 @@ return {
     event = "InsertEnter",
     opts = {
       keymaps = {
-        accept_suggestion = "<C-l>",   -- <Tab> is owned by cmp/luasnip
+        -- <Tab> belongs to cmp. <C-j> did too (next item in the menu), so one
+        -- word at a time moved next to the accept-all key instead.
+        accept_suggestion = "<C-l>",
         clear_suggestion  = "<C-]>",
-        accept_word       = "<C-j>",   -- accept one word at a time
+        accept_word       = "<M-l>",
       },
       ignore_filetypes = { "TelescopePrompt", "NvimTree" },
       color = {
