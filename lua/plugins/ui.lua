@@ -18,6 +18,7 @@ return {
         gitsigns = true,
         treesitter = true,
         cmp = true,
+        render_markdown = true,
       },
     },
     config = function(_, opts)
@@ -97,17 +98,45 @@ return {
     end,
   },
 
-  -- Markdown rendered in place: headings, tables, code blocks, checkboxes.
-  -- Only while the cursor is elsewhere; the line under the cursor shows raw
-  -- text so it stays editable.
+  -- Markdown rendered in place: headings as coloured bands, code blocks boxed,
+  -- bullets and tables redrawn. The line under the cursor stays raw so it can
+  -- be edited; <leader>tm shows the whole file raw.
   {
     "MeanderingProgrammer/render-markdown.nvim",
     ft = { "markdown" },
     dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
     opts = {
-      heading = { icons = { "# ", "## ", "### ", "#### ", "##### ", "###### " } },
-      code = { width = "block", left_pad = 1, right_pad = 1 },
+      heading = {
+        -- Icon inside the band, band as wide as the text, a blank line's worth
+        -- of border above and below so headings stand off the body.
+        position = "inline",
+        icons = { "󰲡 ", "󰲣 ", "󰲥 ", "󰲧 ", "󰲩 ", "󰲫 " },
+        sign = false,
+        width = "block",
+        left_pad = 1,
+        right_pad = 3,
+        min_width = 40,
+        border = true,
+        border_virtual = true,
+      },
+      code = {
+        sign = false,
+        width = "block",
+        left_pad = 2,
+        right_pad = 2,
+        min_width = 60,
+        border = "thick",
+        language_name = true,
+        position = "right",
+      },
+      bullet = { icons = { "●", "○", "◆", "◇" }, left_pad = 1 },
       checkbox = { enabled = true },
+      dash = { width = 60 },
+      quote = { repeat_linebreak = true },
+      pipe_table = { preset = "round", cell = "padded" },
+      link = { enabled = true },
+      -- Rendered in normal, command and terminal modes; raw in insert and visual.
+      render_modes = { "n", "c", "t" },
     },
     keys = {
       { "<leader>tm", "<cmd>RenderMarkdown toggle<cr>", desc = "Toggle markdown rendering" },
