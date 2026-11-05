@@ -80,6 +80,10 @@ map({ "n", "v" }, "x", '"_x', opts)
 map("v", "p", '"_dP', opts)
 map({ "n", "v" }, "<leader>p", '"0p', { desc = "Paste the last yank, not the last delete" })
 
+-- u undoes, U redoes: Shift reverses, like p/P, n/N, J/K. (U's original job,
+-- "undo the whole line", is never missed; <C-r> still works.)
+map("n", "U", "<C-r>", opts)
+
 -- Search
 map("n", "<leader>/", ":nohl<CR>", { desc = "Clear search highlight" })
 map("n", "n", "nzzzv", opts)  -- keep the match in the middle of the screen
